@@ -1,3 +1,5 @@
+require 'date'
+
 class HCast::Casters::DateCaster
 
   def self.cast(value, attr_name, options = {})

@@ -1,3 +1,5 @@
+require 'time'
+
 class HCast::Casters::TimeCaster
 
   def self.cast(value, attr_name, options = {})
