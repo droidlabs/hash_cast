@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["deeper4k@gmail.com"]
   spec.description   = %q{Declarative Hash Caster}
   spec.summary       = %q{Declarative Hash Caster}
-  spec.homepage      = "http://github.com/AlbertGazizov/hcast"
+  spec.homepage      = "http://github.com/droidlabs/hcast"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
