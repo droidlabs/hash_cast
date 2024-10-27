@@ -16,8 +16,7 @@ class HCast::AttributesCaster
           casted_value = cast_attribute(attribute, input_hash)
           casted_hash[attribute.name] = casted_value
         rescue HCast::Errors::AttributeError => e
-          e.add_namespace(attribute.name)
-          raise e
+          handle_attribute_error(e, attribute)
         end
       else
         raise HCast::Errors::MissingAttributeError.new("should be given", attribute.name)if attribute.required?
@@ -32,6 +31,11 @@ class HCast::AttributesCaster
   end
 
   private
+
+  def handle_attribute_error(exception, attribute)
+    exception.add_namespace(attribute.name)
+    raise exception
+  end
 
   def cast_attribute(attribute, hash)
     value = get_value(hash, attribute.name)
