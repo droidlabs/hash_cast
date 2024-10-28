@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
-require 'hcast'
+require 'hash_cast'
 
 RSpec.configure do |config|
 end

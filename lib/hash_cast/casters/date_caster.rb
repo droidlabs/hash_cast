@@ -1,6 +1,6 @@
 require 'date'
 
-class HCast::Casters::DateCaster
+class HashCast::Casters::DateCaster
 
   def self.cast(value, attr_name, options = {})
     if value.is_a?(Date)
@@ -9,10 +9,10 @@ class HCast::Casters::DateCaster
       begin
         Date.parse(value)
       rescue ArgumentError => e
-        raise HCast::Errors::CastingError, "is invalid date"
+        raise HashCast::Errors::CastingError, "is invalid date"
       end
     else
-      raise HCast::Errors::CastingError, "should be a date"
+      raise HashCast::Errors::CastingError, "should be a date"
     end
   end
 

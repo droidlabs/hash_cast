@@ -1,14 +1,14 @@
-# HCast
-[![Rspec](https://github.com/droidlabs/hcast/workflows/Rspec/badge.svg)](https://github.com/droidlabs/hcast/actions?query=workflow%3ARspec)
+# HashCast
+[![Rspec](https://github.com/droidlabs/hash_cast/workflows/Rspec/badge.svg)](https://github.com/droidlabs/hash_cast/actions?query=workflow%3ARspec)
 
-HCast is a library for casting hash attributes
+HashCast is a library for casting hash attributes
 
 ### Usage
 
 Create caster class and declare hash attributes inside:
 ```ruby
 class ContactCaster
-  include HCast::Caster
+  include HashCast::Caster
 
   attributes do
     hash :contact do
@@ -86,7 +86,7 @@ The caster will cast your hash attributes to:
 }
 ```
 
-if some of the attributes can't be casted the HCast::Errors::CastingError is raised
+if some of the attributes can't be casted the HashCast::Errors::CastingError is raised
 
 
 ## Author

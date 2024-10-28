@@ -1,4 +1,4 @@
-class HCast::Casters::SymbolCaster
+class HashCast::Casters::SymbolCaster
   MAX_SYMBOL_LENGTH = 1000
 
   def self.cast(value, attr_name, options = {})
@@ -6,12 +6,12 @@ class HCast::Casters::SymbolCaster
       value
     elsif value.is_a?(String)
       if value.length > MAX_SYMBOL_LENGTH
-        raise HCast::Errors::CastingError, "is too long to be a symbol"
+        raise HashCast::Errors::CastingError, "is too long to be a symbol"
       else
         value.to_sym
       end
     else
-      raise HCast::Errors::CastingError, "should be a symbol"
+      raise HashCast::Errors::CastingError, "should be a symbol"
     end
   end
 

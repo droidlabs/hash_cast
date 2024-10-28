@@ -1,6 +1,6 @@
 require 'time'
 
-class HCast::Casters::TimeCaster
+class HashCast::Casters::TimeCaster
 
   def self.cast(value, attr_name, options = {})
     if value.is_a?(Time)
@@ -9,10 +9,10 @@ class HCast::Casters::TimeCaster
       begin
         Time.parse(value)
       rescue ArgumentError => e
-        raise HCast::Errors::CastingError, "is invalid time"
+        raise HashCast::Errors::CastingError, "is invalid time"
       end
     else
-      raise HCast::Errors::CastingError, "should be a time"
+      raise HashCast::Errors::CastingError, "should be a time"
     end
   end
 

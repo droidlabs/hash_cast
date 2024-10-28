@@ -1,4 +1,4 @@
-class HCast::Casters::FloatCaster
+class HashCast::Casters::FloatCaster
 
   def self.cast(value, attr_name, options = {})
     if value.is_a?(Float)
@@ -7,10 +7,10 @@ class HCast::Casters::FloatCaster
       begin
         Float(value)
       rescue ArgumentError => e
-        raise HCast::Errors::CastingError, "is invalid float"
+        raise HashCast::Errors::CastingError, "is invalid float"
       end
     else
-      raise HCast::Errors::CastingError, "should be a float"
+      raise HashCast::Errors::CastingError, "should be a float"
     end
   end
 

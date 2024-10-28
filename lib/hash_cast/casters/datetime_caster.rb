@@ -1,4 +1,4 @@
-class HCast::Casters::DateTimeCaster
+class HashCast::Casters::DateTimeCaster
 
   def self.cast(value, attr_name, options = {})
     if value.is_a?(DateTime)
@@ -9,10 +9,10 @@ class HCast::Casters::DateTimeCaster
       begin
         DateTime.parse(value)
       rescue ArgumentError => e
-        raise HCast::Errors::CastingError, "is invalid datetime"
+        raise HashCast::Errors::CastingError, "is invalid datetime"
       end
     else
-      raise HCast::Errors::CastingError, "should be a datetime"
+      raise HashCast::Errors::CastingError, "should be a datetime"
     end
   end
 

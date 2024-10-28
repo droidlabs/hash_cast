@@ -1,4 +1,4 @@
-class HCast::Casters::BooleanCaster
+class HashCast::Casters::BooleanCaster
 
   def self.cast(value, attr_name, options = {})
     if [TrueClass, FalseClass].include?(value.class)
@@ -8,7 +8,7 @@ class HCast::Casters::BooleanCaster
     elsif ['0', 'false', 'off', 0].include?(value)
       false
     else
-      raise HCast::Errors::CastingError, "should be a boolean"
+      raise HashCast::Errors::CastingError, "should be a boolean"
     end
   end
 

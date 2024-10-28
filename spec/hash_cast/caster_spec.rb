@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe HCast::Caster do
+describe HashCast::Caster do
   describe "#cast" do
 
     class ContactCaster
-      include HCast::Caster
+      include HashCast::Caster
 
       attributes do
         hash :contact do
@@ -82,7 +82,7 @@ describe HCast::Caster do
 
     describe "Custom casters" do
       class SettingsCaster
-        include HCast::Caster
+        include HashCast::Caster
 
         attributes do
           string :account
@@ -90,7 +90,7 @@ describe HCast::Caster do
       end
 
       class EmailCaster
-        include HCast::Caster
+        include HashCast::Caster
 
         attributes do
           string :address
@@ -98,7 +98,7 @@ describe HCast::Caster do
       end
 
       class CompanyCaster
-        include HCast::Caster
+        include HashCast::Caster
 
         attributes do
           string :name
@@ -158,7 +158,7 @@ describe HCast::Caster do
 
       expect do
         ContactCaster.cast(input_hash)
-      end.to raise_error(HCast::Errors::CastingError, "contact[name] should be a string")
+      end.to raise_error(HashCast::Errors::CastingError, "contact[name] should be a string")
     end
 
     it "should raise error if some attribute wasn't given" do
@@ -188,7 +188,7 @@ describe HCast::Caster do
 
       expect do
         ContactCaster.cast(input_hash)
-      end.to raise_error(HCast::Errors::MissingAttributeError, "contact[name] should be given")
+      end.to raise_error(HashCast::Errors::MissingAttributeError, "contact[name] should be given")
     end
 
     it "should not raise error if attribute is optional" do
@@ -249,7 +249,7 @@ describe HCast::Caster do
 
       expect do
         ContactCaster.cast(input_hash)
-      end.to raise_error(HCast::Errors::UnexpectedAttributeError, "contact[wrong_attribute] is not valid attribute name")
+      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "contact[wrong_attribute] is not valid attribute name")
     end
 
     it "shouldn't unexpected attributes error if skip_unexpected_attributes flag is set to true" do
@@ -280,7 +280,7 @@ describe HCast::Caster do
 
       expect do
         ContactCaster.cast(input_hash, skip_unexpected_attributes: true)
-      end.not_to raise_error(HCast::Errors::UnexpectedAttributeError)
+      end.not_to raise_error(HashCast::Errors::UnexpectedAttributeError)
 
     end
 
@@ -343,20 +343,20 @@ describe HCast::Caster do
     it "should raise CaterNotFound exception if caster name is invalid" do
       expect do
         class WrongCaster
-          include HCast::Caster
+          include HashCast::Caster
 
           attributes do
             integr   :name
           end
         end
-      end.to raise_error(HCast::Errors::CasterNotFoundError)
+      end.to raise_error(HashCast::Errors::CasterNotFoundError)
     end
   end
 
   context "allow nil values" do
     before(:all) do
       class HomeCaster
-        include HCast::Caster
+        include HashCast::Caster
 
         attributes do
           string   :city
@@ -378,7 +378,7 @@ describe HCast::Caster do
           city: nil,
           zip: nil
         )
-      end.to raise_error(HCast::Errors::CastingError, "city should be a string")
+      end.to raise_error(HashCast::Errors::CastingError, "city should be a string")
     end
   end
 end

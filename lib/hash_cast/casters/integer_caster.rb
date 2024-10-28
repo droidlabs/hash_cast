@@ -1,4 +1,4 @@
-class HCast::Casters::IntegerCaster
+class HashCast::Casters::IntegerCaster
 
   def self.cast(value, attr_name, options = {})
     if value.is_a?(Integer)
@@ -7,10 +7,10 @@ class HCast::Casters::IntegerCaster
       begin
         Integer(value)
       rescue ArgumentError => e
-        raise HCast::Errors::CastingError, "is invalid integer"
+        raise HashCast::Errors::CastingError, "is invalid integer"
       end
     else
-      raise HCast::Errors::CastingError, "should be a integer"
+      raise HashCast::Errors::CastingError, "should be a integer"
     end
   end
 
