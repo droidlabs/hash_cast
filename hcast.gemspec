@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'hcast/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "hcast"
+  spec.name          = "hash_cast"
   spec.version       = HCast::VERSION
   spec.authors       = ["Albert Gazizov"]
   spec.email         = ["deeper4k@gmail.com"]
   spec.description   = %q{Declarative Hash Caster}
   spec.summary       = %q{Declarative Hash Caster}
-  spec.homepage      = "http://github.com/droidlabs/hcast"
+  spec.homepage      = "http://github.com/droidlabs/hash_cast"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
