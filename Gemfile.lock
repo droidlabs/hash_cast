@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hcast (0.3.0)
+    hash_cast (0.4.0)
 
 GEM
   remote: https://rubygems.org/
@@ -27,7 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  hcast!
+  hash_cast!
   rake
   rspec
 
