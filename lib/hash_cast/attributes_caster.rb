@@ -23,7 +23,7 @@ class HashCast::AttributesCaster
       end
     end
 
-    if !options[:skip_unexpected_attributes]
+    if options.has_key?(:skip_unexpected_attributes) && !options[:skip_unexpected_attributes]
       check_unexpected_attributes_not_given!(hash_keys, casted_hash.keys)
     end
 
