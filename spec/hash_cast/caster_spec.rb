@@ -381,4 +381,29 @@ describe HashCast::Caster do
       end.to raise_error(HashCast::Errors::CastingError, "city should be a string")
     end
   end
+
+  context "string caster" do
+    before(:all) do
+      class HomeCaster
+        include HashCast::Caster
+
+        attributes do
+          string   :city
+        end
+      end
+    end
+
+    after{ HashCast.config.validate_string_null_byte = nil }
+
+    it "should allow null byte if validate_string_null_byte config is set to false" do
+      HashCast.config.validate_string_null_byte = false
+      HomeCaster.cast(city: "\u0000")
+    end
+
+    it "should not allow null byte if validate_string_null_byte config by default" do
+      expect do
+        HomeCaster.cast(city: "\u0000")
+      end.to raise_error(HashCast::Errors::CastingError, "city contains invalid characters")
+    end
+  end
 end
