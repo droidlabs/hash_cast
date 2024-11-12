@@ -221,7 +221,38 @@ describe HashCast::Caster do
       end.to_not raise_error
     end
 
-    it "should raise error if unexpected attribute was given" do
+    it "raises error if skip_unexpected_attributes=false and unexpected attribute was given" do
+      input_hash = {
+        contact: {
+          wrong_attribute: 'foo',
+          name: "Jim",
+          weight: 65.5,
+          birthday: Date.today,
+          last_logged_in: DateTime.now,
+          last_visited_at: Time.now,
+          company: {
+            name: "MyCo",
+          },
+          emails: [ "test@example.com", "test2@example.com" ],
+          social_accounts: [
+            {
+              name: "john_smith",
+              type: :twitter,
+            },
+            {
+              name: "John",
+              type: :facebook,
+            },
+          ]
+        }
+      }
+
+      expect do
+        ContactCaster.cast(input_hash, skip_unexpected_attributes: false)
+      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "contact[wrong_attribute] is not valid attribute name")
+    end
+
+    it "doesn't raise unexpected attributes error by default" do
       input_hash = {
         contact: {
           wrong_attribute: 'foo',
@@ -249,37 +280,6 @@ describe HashCast::Caster do
 
       expect do
         ContactCaster.cast(input_hash)
-      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "contact[wrong_attribute] is not valid attribute name")
-    end
-
-    it "shouldn't unexpected attributes error if skip_unexpected_attributes flag is set to true" do
-      input_hash = {
-        contact: {
-          wrong_attribute: 'foo',
-          name: "Jim",
-          weight: 65.5,
-          birthday: Date.today,
-          last_logged_in: DateTime.now,
-          last_visited_at: Time.now,
-          company: {
-            name: "MyCo",
-          },
-          emails: [ "test@example.com", "test2@example.com" ],
-          social_accounts: [
-            {
-              name: "john_smith",
-              type: :twitter,
-            },
-            {
-              name: "John",
-              type: :facebook,
-            },
-          ]
-        }
-      }
-
-      expect do
-        ContactCaster.cast(input_hash, skip_unexpected_attributes: true)
       end.not_to raise_error(HashCast::Errors::UnexpectedAttributeError)
 
     end
