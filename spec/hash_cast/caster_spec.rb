@@ -221,69 +221,6 @@ describe HashCast::Caster do
       end.to_not raise_error
     end
 
-    it "raises error if skip_unexpected_attributes=false and unexpected attribute was given" do
-      input_hash = {
-        contact: {
-          wrong_attribute: 'foo',
-          name: "Jim",
-          weight: 65.5,
-          birthday: Date.today,
-          last_logged_in: DateTime.now,
-          last_visited_at: Time.now,
-          company: {
-            name: "MyCo",
-          },
-          emails: [ "test@example.com", "test2@example.com" ],
-          social_accounts: [
-            {
-              name: "john_smith",
-              type: :twitter,
-            },
-            {
-              name: "John",
-              type: :facebook,
-            },
-          ]
-        }
-      }
-
-      expect do
-        ContactCaster.cast(input_hash, skip_unexpected_attributes: false)
-      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "contact[wrong_attribute] is not valid attribute name")
-    end
-
-    it "doesn't raise unexpected attributes error by default" do
-      input_hash = {
-        contact: {
-          wrong_attribute: 'foo',
-          name: "Jim",
-          weight: 65.5,
-          birthday: Date.today,
-          last_logged_in: DateTime.now,
-          last_visited_at: Time.now,
-          company: {
-            name: "MyCo",
-          },
-          emails: [ "test@example.com", "test2@example.com" ],
-          social_accounts: [
-            {
-              name: "john_smith",
-              type: :twitter,
-            },
-            {
-              name: "John",
-              type: :facebook,
-            },
-          ]
-        }
-      }
-
-      expect do
-        ContactCaster.cast(input_hash)
-      end.not_to raise_error(HashCast::Errors::UnexpectedAttributeError)
-
-    end
-
     it "should convert accept hash with string keys and cast them to symbol keys" do
       input_hash = {
         'contact' => {
@@ -339,8 +276,102 @@ describe HashCast::Caster do
     end
   end
 
+  context "checking unexpected attributes" do
+    before(:all) do
+      class BillingDetailsCaster
+        include HashCast::Caster
+
+        attributes do
+          string   :name, optional: true
+
+          array :contacts, each: :hash, optional: true do
+            string :email
+          end
+
+          hash :address, optional: true do
+            string  :city
+            string  :country
+          end
+        end
+      end
+    end
+
+    it "doesn't raise unexpected attributes error by default" do
+      input_hash = {
+        wrong_attribute: 'foo',
+        name: "Jim",
+        address: {
+          city:     "New York",
+          country:  "USA",
+          street:   "Random street"
+        },
+        contacts: [
+          {
+            name: "john_smith",
+            email: "john@example.com",
+          }
+        ]
+      }
+
+      output_hash = BillingDetailsCaster.cast(input_hash)
+
+      expect(output_hash).to eq({
+        name: "Jim",
+        address: {
+          city:     "New York",
+          country:  "USA"
+        },
+        contacts: [
+          {
+            email: "john@example.com",
+          }
+        ]
+      })
+    end
+
+    it "raise error for unexpected root attribute if skip_unexpected_attributes=false" do
+      input_hash = {
+        wrong_attribute: 'foo',
+        name: "Jim"
+      }
+
+      expect do
+        BillingDetailsCaster.cast(input_hash, skip_unexpected_attributes: false)
+      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "wrong_attribute is not valid attribute name")
+    end
+
+    it "raise error for unexpected root attribute if skip_unexpected_attributes=false" do
+      input_hash = {
+        name: "Jim",
+        address: {
+          city:     "New York",
+          country:  "USA",
+          street:   "Random street"
+        }
+      }
+
+      expect do
+        BillingDetailsCaster.cast(input_hash, skip_unexpected_attributes: false)
+      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "address[street] is not valid attribute name")
+    end
+
+    it "raise error for unexpected root attribute if skip_unexpected_attributes=false" do
+      input_hash = {
+        name: "Jim",
+        contacts: [{
+          name: "john_smith",
+          email: "john@example.com",
+        }]
+      }
+
+      expect do
+        BillingDetailsCaster.cast(input_hash, skip_unexpected_attributes: false)
+      end.to raise_error(HashCast::Errors::UnexpectedAttributeError, "contacts[name] is not valid attribute name")
+    end
+  end
+
   context "checking invalid parameters" do
-    it "should raise CaterNotFound exception if caster name is invalid" do
+    it "should raise CasterNotFound exception if caster name is invalid" do
       expect do
         class WrongCaster
           include HashCast::Caster
