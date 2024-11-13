@@ -32,6 +32,16 @@ module HashCast
   def self.config
     @@config ||= HashCast::Config.new
   end
+
+  def self.create(&block)
+    Class.new do
+      include HashCast::Caster
+
+      attributes do
+        instance_exec(&block)
+      end
+    end
+  end
 end
 
 HashCast.add_caster(:array,    HashCast::Casters::ArrayCaster)

@@ -4,11 +4,10 @@ describe HashCast do
 
   describe ".create" do
     it "should cast hash attributes" do
-      pending "NOT YET IMPLEMENTED"
       input_hash = {
         contact: {
           name: "John Smith",
-          age: "22",
+          age:  22,
           company: {
             name: "MyCo",
           }
@@ -30,8 +29,9 @@ describe HashCast do
       end
 
       casted_hash = caster.cast(input_hash)
-      casted_hash.object_id.should_not == hash.object_id
-      caster_hash.should == hash
+
+      expect(casted_hash.object_id).to_not eq(input_hash.object_id)
+      expect(casted_hash).to eq(input_hash)
     end
   end
 end
