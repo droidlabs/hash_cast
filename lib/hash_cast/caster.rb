@@ -104,8 +104,8 @@ module HashCast::Caster
       check_options!(options)
       set_default_options(options)
 
-      attributes_caster = HashCast::AttributesCaster.new(class_variable_get(:@@attributes), options)
-      attributes_caster.cast(hash)
+      caster_applicator = HashCast::RecursiveCasterApplicator.new(class_variable_get(:@@attributes), options)
+      caster_applicator.cast(hash)
     end
 
     private

@@ -5,7 +5,7 @@ require 'hash_cast/casters'
 require 'hash_cast/concern.rb'
 require 'hash_cast/metadata/attribute'
 require 'hash_cast/attributes_parser'
-require 'hash_cast/attributes_caster'
+require 'hash_cast/recursive_caster_applicator'
 require 'hash_cast/caster'
 
 module HashCast

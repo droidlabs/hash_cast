@@ -1,4 +1,4 @@
-class HashCast::AttributesCaster
+class HashCast::RecursiveCasterApplicator
   attr_reader :attributes, :options
 
   def initialize(attributes, options)
@@ -19,7 +19,7 @@ class HashCast::AttributesCaster
           handle_attribute_error(e, attribute)
         end
       else
-        raise HashCast::Errors::MissingAttributeError.new("should be given", attribute.name)if attribute.required?
+        raise HashCast::Errors::MissingAttributeError.new("should be given", attribute.name) if attribute.required?
       end
     end
 
