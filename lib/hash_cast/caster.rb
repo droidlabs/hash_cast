@@ -99,21 +99,26 @@ module HashCast::Caster
     # @param hash [Hash] hash for casting
     # @param options [Hash] options, input_keys: :string, output_key: :symbol
     def cast(hash, options = {})
-      check_attributes_defined!
-      check_hash_given!(hash)
-      check_options!(options)
-      set_default_options(options)
-
-      caster_applicator = HashCast::RecursiveCasterApplicator.new(class_variable_get(:@@attributes), options)
-      caster_applicator.cast(hash)
+      cast_with_attributes(hash, get_attributes, options)
     end
 
     private
 
-    def check_attributes_defined!
+    def get_attributes
       unless class_variable_defined?(:@@attributes)
         raise HashCast::Errors::ArgumentError, "Attributes block should be defined"
       end
+
+      class_variable_get(:@@attributes)
+    end
+
+    def cast_with_attributes(hash, attributes, options = {})
+      check_hash_given!(hash)
+      check_options!(options)
+      set_default_options(options)
+
+      caster_applicator = HashCast::RecursiveCasterApplicator.new(attributes, options)
+      caster_applicator.cast(hash)
     end
 
     def check_options!(options)
