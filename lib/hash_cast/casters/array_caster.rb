@@ -7,7 +7,7 @@ class HashCast::Casters::ArrayCaster
 
     if HashCast.config.array_size_validator_enabled
       if value.size > HashCast.config.array_size_validator_limit
-        raise HashCast::Errors::CastingError, "array is too large"
+        HashCast.config.array_size_validator_callback.call(value, attr_name, options)
       end
     end
 

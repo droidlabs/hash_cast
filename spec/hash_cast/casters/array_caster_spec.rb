@@ -3,7 +3,7 @@ require 'spec_helper'
 describe HashCast::Casters::ArrayCaster do
   subject { HashCast::Casters::ArrayCaster }
 
-  it "should cast array" do
+  it "should cast an array" do
     result = subject.cast([1,2,3], :ids)
     expect(result).to eq([1,2,3])
   end
@@ -32,6 +32,18 @@ describe HashCast::Casters::ArrayCaster do
       expect {
         subject.cast([1] * 10_000, :ids)
       }.to raise_error(HashCast::Errors::CastingError, "array is too large")
+    end
+
+    it "should allow overriding the callback" do
+      HashCast.config.array_size_validator_enabled = true
+      HashCast.config.array_size_validator_limit = 1000
+      HashCast.config.array_size_validator_callback = lambda { |value, name, options|
+        raise HashCast::Errors::UnexpectedAttributeError, 'test'
+      }
+
+      expect {
+        subject.cast([1] * 10_000, :ids)
+      }.to raise_error(HashCast::Errors::UnexpectedAttributeError, "test")
     end
   end
 end

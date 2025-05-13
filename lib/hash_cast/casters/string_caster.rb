@@ -8,6 +8,12 @@ class HashCast::Casters::StringCaster
       raise HashCast::Errors::CastingError, 'contains invalid characters'
     end
 
+    if HashCast.config.string_size_validator_enabled
+      if value.size > HashCast.config.string_size_validator_limit
+        HashCast.config.string_size_validator_callback.call(value, attr_name, options)
+      end
+    end
+
     casted_value
   end
 
