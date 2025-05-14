@@ -1,14 +1,20 @@
 class HashCast::Casters::ArrayCaster
 
   def self.cast(value, attr_name, options = {})
-    if value.is_a?(Array)
-      if options[:each]
-        cast_array_items(value, attr_name, options)
-      else
-        value
-      end
-    else
+    unless value.is_a?(Array)
       raise HashCast::Errors::CastingError, "should be an array"
+    end
+
+    if HashCast.config.array_size_validator_enabled
+      if value.size > HashCast.config.array_size_validator_limit
+        HashCast.config.array_size_validator_callback.call(value, attr_name, options)
+      end
+    end
+
+    if options[:each]
+      cast_array_items(value, attr_name, options)
+    else
+      value
     end
   end
 
