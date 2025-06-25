@@ -1,3 +1,6 @@
+**Version 0.5.4**
+- Integer caster should only allow integer range by default (-2^31, 2^31)
+
 **Version 0.5.3**
 - Added optional support for array and string size validation
 
